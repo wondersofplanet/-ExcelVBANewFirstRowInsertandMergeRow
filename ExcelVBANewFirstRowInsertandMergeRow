@@ -1,0 +1,41 @@
+
+
+Sub InsertAndMergeFirstRow()
+    Dim ws As Worksheet
+    Dim lastColumn As Long
+    Dim mergeRange As Range
+    Dim isAlreadyMerged As Boolean
+    Dim currentMergeArea As Range
+    
+    ' Set the current sheet as the active sheet
+    Set ws = ActiveSheet
+    
+    ' Check if the first row already exists and is merged
+    On Error Resume Next
+    Set currentMergeArea = ws.Rows(1).MergeArea
+    On Error GoTo 0
+    
+    isAlreadyMerged = Not currentMergeArea Is Nothing
+    
+    ' Insert an empty row at the top if not already inserted
+    If ws.Cells(1, 1).Value <> "" Or isAlreadyMerged Then
+        ws.Rows(1).Insert Shift:=xlDown
+    End If
+    
+    ' Find the last column with data in the second row (which is now the third row after insertion)
+    lastColumn = ws.Cells(2, ws.Columns.Count).End(xlToLeft).Column
+    
+    ' Unmerge cells in the first row before adjusting merge
+    If isAlreadyMerged Then
+        currentMergeArea.UnMerge
+    End If
+    
+    ' Unmerge any previously merged cells in the first row
+    ws.Rows(1).UnMerge
+    
+    ' Merge cells in the first row based on the last column with data in the second row
+    If lastColumn > 1 Then
+        Set mergeRange = ws.Range(ws.Cells(1, 1), ws.Cells(1, lastColumn))
+        mergeRange.Merge
+    End If
+End Sub
