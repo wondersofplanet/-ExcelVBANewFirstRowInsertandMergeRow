@@ -1,4 +1,4 @@
-# Excel VBA Insert and Merge Row
+# Excel VBA Insert New row and Merge it also
 
 This VBA macro for Excel inserts an empty row at the top of the active sheet and adjusts the merged cells in the first row based on the length of the data in the second row. If the first row is already merged, the macro ensures it is correctly unmerged and re-merged according to the new length of the second row.
 
